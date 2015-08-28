@@ -1,0 +1,1 @@
+Search.setIndex({envversion:46,filenames:["index"],objects:{},objnames:{},objtypes:{},terms:{autojinja:[],content:0,index:0,init:[],logrot:[],modul:[],page:0,search:0,test:0},titles:["Welcome to mongodb-formula&#8217;s documentation!"],titleterms:{document:0,formula:0,indic:0,modul:0,mongodb:0,tabl:0,welcom:0}})

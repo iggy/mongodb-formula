@@ -1,3 +1,9 @@
+{#
+mongodb module
+==============
+
+Test
+#}
 # This setup for mongodb assumes that the replica set can be determined from
 # the id of the minion
 # NOTE: Currently this will not work behind a NAT in AWS VPC.
@@ -14,6 +20,8 @@ mongodb_package:
     - file: /etc/apt/sources.list.d/mongodb.list
     - keyid: 7F0CEB10
     - keyserver: keyserver.ubuntu.com
+    #- require_in:
+      #pkg: mongodb_package
 {% endif %}
   pkg.installed:
      - name: {{ mdb.mongodb_package }}
@@ -21,6 +29,17 @@ mongodb_package:
 mongodb_db_path:
   file.directory:
     - name: {{ mdb.db_path }}
+    - user: mongodb
+    - group: mongodb
+    - mode: 755
+    - makedirs: True
+    - recurse:
+        - user
+        - group
+
+mongodb_run_path:
+  file.directory:
+    - name: /var/run/mongodb
     - user: mongodb
     - group: mongodb
     - mode: 755

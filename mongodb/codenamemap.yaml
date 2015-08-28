@@ -3,7 +3,11 @@ trusty:
   use_repo: True
   mongodb_package: mongodb-org
   mongos_package: mongodb-org-mongos
+  mongod: mongod
+  conf_path: /etc/mongod.conf
 precise:
   use_repo: True
   mongodb_package: mongodb-org
   mongos_package: mongodb-org-mongos
+  mongod: mongod
+  conf_path: /etc/mongod.conf

@@ -2,12 +2,24 @@
 {% import_yaml "mongodb/osmap.yaml" as osmap %}
 {% import_yaml "mongodb/codenamemap.yaml" as codemap %}
 
-{% set distro_map = salt['pillar.get']('mongodb:lookup',
-    default=salt['grains.filter_by'](osmap), merge=True) %}
-{% set code_map = salt['grains.filter_by'](codemap, grain='oscodename') %}
+{# get the settings for the os_family grain #}
+{% set osfam = salt['grains.filter_by'](osmap) %}
+{# get the settings for the oscodename grain, os_family data will override
+    oscodename data #}
+{% set oscode = salt['grains.filter_by'](codemap,
+                                         grain='oscodename',
+                                         merge=osfam) %}
 
-{% do defaults.mongodb.update(osmap) %}
-{% do defaults.mongodb.update(codemap) %}
+{# merge the os family/codename specific data over the defaults #}
+{% do defaults.mongodb.update(oscode) %}
 
-{% set mdb = salt['pillar.get']('mongodb', default=defaults.mongodb, merge=True) %}
+{# merge the pillar:lookup dict into the defaults/os specific dict #}
+{% set lookup = salt['pillar.get']('mongodb:lookup',
+                                   default=defaults.mongodb,
+                                   merge=True) %}
+
+{# merge the actual mongodb pillar into the above combined dict #}
+{% set mdb = salt['pillar.get']('mongodb', default=lookup, merge=True) %}
+
+{# this hopefully goes away soon #}
 {% set ms = salt['pillar.get']('mongos', default=defaults.mongos, merge=True) %}
